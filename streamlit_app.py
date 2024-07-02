@@ -7,7 +7,6 @@ from seaborn import heatmap
 
 title("Matriz de confusión: Porcentaje de créditos aprobados vs. Puntaje Advise")
 
-# Sliders
 threshold_percentage_of_passed_credits = slider(
     "Porcentaje de créditos aprobados máximo que determina riesgo:", 1, 100, 75)
 threshold_advise = slider(
