@@ -17,26 +17,26 @@ The application deploys automatically when a new commit is pushed to the `main` 
 1. Create a virtual environment
 
    ```shell
-   $ python -m venv venv
-   $ source venv/bin/activate
+   python -m venv venv
+   source venv/bin/activate
    ```
    
    The second command, to activate the virtual environment, will only work on Unix. For Windows, use the following command:
 
    ```bash
-   $ venv\Scripts\activate
+   venv\Scripts\activate
    ```
 
 2. Install the requirements
 
    ```
-   $ pip install -r requirements.txt
+   pip install -r requirements.txt
    ```
 
 3. Run the app
 
    ```
-   $ streamlit run streamlit_app.py
+   streamlit run streamlit_app.py
    ```
 
 The server should be running at http://localhost:8501.
