@@ -70,16 +70,17 @@ def display_confusion_matrix(cm: DataFrame) -> None:
 
 
 def display_markdown(threshold_percentage_of_passed_credits: float, threshold_advise: int) -> None:
-    markdown("""
-    Se utiliza el *porcentaje de créditos aprobados* para determinar si un estudiante realmente está en riesgo. Se cataloga a un estudiante como "en riesgo" si su porcentaje de créditos aprobados con respecto a los inscritos es menor o igual al {0}%. 
+    markdown(r"""
+Se utiliza el *porcentaje de créditos aprobados* para determinar si un estudiante realmente está en riesgo. Se cataloga a un estudiante como *en riesgo* si su porcentaje de créditos aprobados con respecto a los inscritos es menor o igual al {0}%. 
 
-    Se realiza el contraste con el *puntaje Advise*. Se considera que un estudiante está en riesgo si su puntaje Advise es menor o igual a {1}.
+Se realiza el contraste con el *puntaje Advise*. Se considera que un estudiante está en riesgo si su puntaje Advise es menor o igual a {1}.
 
-    - **Verdadero Positivo (VP):** El puntaje Advise es menor o igual a {1} y los créditos aprobados son menores o iguales al {0}%. Advise ha detectado correctamente que el estudiante está en riesgo.
-    - **Falso Positivo (FP):** El puntaje Advise es menor o igual a {1}, pero el porcentaje de créditos aprobados es mayor al {0}%. Advise ha catalogado al estudiante como en riesgo incorrectamente.
-    - **Verdadero Negativo (VN):** El puntaje Advise es mayor a {1} y los créditos aprobados son mayores al {0}%. Advise indica correctamente que el estudiante no está en riesgo.
-    - **Falso Negativo (FN):** El puntaje Advise es mayor a {1}, pero el porcentaje de créditos aprobados es menor o igual al {0}%. Advise ha pasado por alto a un estudiante en riesgo.
-    """.format(threshold_percentage_of_passed_credits * 100, threshold_advise))
+Se define la matriz de confusión $M$ de $2 \times 2$, donde las filas corresponden al porcentaje de créditos aprobados y las columnas a Advise. Los índices $0$ corresponden a estudiantes que no están en riesgo y los índices $1$ corresponden a los estudiantes que sí lo están. Por lo tanto:
+- {2} corresponde a los **verdaderos negativos**. Los créditos aprobados son mayores al {0}% y el puntaje Advise es mayor a {1}. Advise indica correctamente que el estudiante no está en riesgo.
+- {3} corresponde a los **falsos positivos** (FP). El porcentaje de créditos aprobados es mayor al {0}%, pero el puntaje Advise es menor o igual a {1}. Advise ha catalogado al estudiante como en riesgo incorrectamente.
+- {4} corresponde a los **falsos negativos**. El porcentaje de créditos aprobados es menor o igual al {0}%, pero el puntaje Advise es mayor a {1}. Advise ha pasado por alto a un estudiante en riesgo.
+- {5} corresponde a los **verdaderos positivos** (VP). Los créditos aprobados son menores o iguales al {0}% y el puntaje Advise es menor o igual a {1}. Advise ha detectado correctamente que el estudiante está en riesgo.
+    """.format(threshold_percentage_of_passed_credits * 100, threshold_advise, r"$M_{0,0}$", r"$M_{0,1}$", r"$M_{1,0}$", r"$M_{1,1}$"))
 
 
 if __name__ == "__main__":
