@@ -7,6 +7,10 @@ from seaborn import heatmap
 from sqlite3 import connect
 
 
+PASSED_CREDITS_PCT_COLUMN = 'PORCENTAJE_CREDITOS_APROBADOS'
+ADVISE_SCORE_COLUMN = 'INDICE_MONITOREO_ADVISE'
+
+
 def main() -> None:
     title("Matriz de confusión: Porcentaje de créditos aprobados vs. Puntaje Advise")
 
@@ -36,21 +40,21 @@ def get_threshold_advise() -> int:
 def load_data_from_db(db_file: str) -> DataFrame:
     conn = connect(db_file)
     df = read_sql_query(
-        'SELECT CODIGO_ESTUDIANTE, PORCENTAJE_CREDITOS_APROBADOS, INDICE_MONITOREO_ADVISE FROM undergraduate_students', conn)
+        'SELECT CODIGO_ESTUDIANTE, LOGIN, PORCENTAJE_CREDITOS_APROBADOS, INDICE_MONITOREO_ADVISE FROM undergraduate_students', conn)
     conn.close()
     return df
 
 
 def preprocess_data(df: DataFrame) -> DataFrame:
-    df['PORCENTAJE_CREDITOS_APROBADOS'].fillna(100, inplace=True)
-    df['INDICE_MONITOREO_ADVISE'].fillna(100, inplace=True)
+    df[PASSED_CREDITS_PCT_COLUMN].fillna(100, inplace=True)
+    df[ADVISE_SCORE_COLUMN].fillna(100, inplace=True)
     return df
 
 
 def get_labels(df: DataFrame, threshold_percentage_of_passed_credits: float, threshold_advise: int) -> Tuple[DataFrame, DataFrame]:
-    y_true = (df['PORCENTAJE_CREDITOS_APROBADOS'] <=
+    y_true = (df[PASSED_CREDITS_PCT_COLUMN] <=
               threshold_percentage_of_passed_credits).astype(int)
-    y_pred = (df['INDICE_MONITOREO_ADVISE'] <= threshold_advise).astype(int)
+    y_pred = (df[ADVISE_SCORE_COLUMN] <= threshold_advise).astype(int)
     return y_true, y_pred
 
 
