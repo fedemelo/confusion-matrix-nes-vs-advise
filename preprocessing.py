@@ -140,6 +140,13 @@ def check_data_quality(undergraduate_students_db_path: str):
         f'Students with passed credits percentage not from latest period: {not_latest_period_count}')
     _display_count(not_latest_period_count, not_latest_period)
 
+    # Student has no login
+    no_login = undergrad_students_df[undergrad_students_df['LOGIN'] == '']
+    no_login_count = len(no_login)
+    if no_login_count > 0:
+        print(f'Students with no login: {no_login_count}')
+        _display_count(no_login_count, no_login)
+
     undergrad_students_conn.close()
 
 
