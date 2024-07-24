@@ -72,7 +72,7 @@ def build_confusion_matrix(df: DataFrame, threshold_percentage_of_passed_credits
 
 
 def display_confusion_matrix(cm: DataFrame, threshold_percentage_of_passed_credits: float, threshold_advise: int) -> None:
-    subheader("Matriz de Confusión:")
+    subheader("Matriz de confusión")
     write(
         f"Se muestra la matriz de confusión para los valores de riesgo calibrados arriba: el {int(threshold_percentage_of_passed_credits*100)}% de créditos aprobados y un puntaje Advise de {threshold_advise}. Abajo se ofrece una explicación detallada de la matriz.")
 
