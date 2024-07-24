@@ -5,9 +5,14 @@ Assumption: An student is considered undergraduate if and only if it has an advi
 
 1. The most recent advise report, as an SQL database advise.db, is read as a DataFrame.
 
-2. A CSV file with the passed credits percentage is produced from the NESObservatory connection microservice.
+2. A CSV file with the passed credits percentage, named `code-passed-credits-pct-period.csv`, is produced from the NESObservatory connection microservice.
+
 ```sql
-SELECT CODIGO_ESTUDIANTE,  PORCENTAJE_CREDITOS_APROBADOS, PERIODO_EVALUADO FROM BlobStorage WHERE PERIODO_EVALUADO IN (202410, 202320)
+SELECT 
+CODIGO_ESTUDIANTE, LOGIN, NOMBRES, APELLIDOS, PORCENTAJE_CREDITOS_APROBADOS, PERIODO_EVALUADO
+FROM 
+BlobStorage 
+WHERE PERIODO_EVALUADO IN (202410, 202320);
 ```
 It is processed into a DataFrame and the most recent entry for each student is kept. 
 It is filtered to only include undergraduate students.
