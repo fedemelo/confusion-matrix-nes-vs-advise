@@ -13,7 +13,8 @@ from streamlit import (
     pyplot,
     expander,
     subheader,
-    spinner
+    spinner,
+    selectbox
 )
 
 
@@ -120,6 +121,19 @@ def display_used_students_explanation(df: DataFrame) -> None:
         "Para el análisis, se tomó como muestra todos los estudiantes de pregrado con puntaje Advise calculado para el periodo 2024-10. Los estudiantes en cuestión se pueden visualizar en la tabla a continuación.")
 
     format_final_df_for_display(df)
+
+    filter_option = selectbox("Filtrar por Resultado", options=[
+                              "Todos", "Verdadero Negativo", "Falso Positivo", "Falso Negativo", "Verdadero Positivo"])
+
+    mappping = {
+        "Verdadero Negativo": "VN",
+        "Falso Positivo": "FP",
+        "Falso Negativo": "FN",
+        "Verdadero Positivo": "VP"
+    }
+
+    if filter_option != "Todos":
+        df = df[df["Resultado"] == mappping[filter_option]]
 
     if len(df) == 0:
         write("No hay estudiantes en la base de datos.")
