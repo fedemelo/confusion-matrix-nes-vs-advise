@@ -24,19 +24,20 @@ ADVISE_SCORE_COLUMN = 'INDICE_MONITOREO_ADVISE'
 def main() -> None:
     header("Matriz de confusión: Porcentaje de créditos aprobados vs. Puntaje Advise")
 
-    threshold_percentage_of_passed_credits, threshold_advise = show_sliders()
-
     df = preprocess_data(load_data_from_db("undergraduate_students.db"))
 
-    cm = build_confusion_matrix(
-        df, threshold_percentage_of_passed_credits, threshold_advise)
-    display_confusion_matrix(
-        cm, threshold_percentage_of_passed_credits, threshold_advise)
+    threshold_percentage_of_passed_credits, threshold_advise = show_sliders()
 
-    display_matrix_explanation(
-        threshold_percentage_of_passed_credits, threshold_advise)
+    with spinner("Aplicando cambios en los valores de riesgo..."):
+        cm = build_confusion_matrix(
+            df, threshold_percentage_of_passed_credits, threshold_advise)
+        display_confusion_matrix(
+            cm, threshold_percentage_of_passed_credits, threshold_advise)
 
-    display_used_students_explanation(df)
+        display_matrix_explanation(
+            threshold_percentage_of_passed_credits, threshold_advise)
+
+        display_used_students_explanation(df)
 
 
 def show_sliders() -> Tuple[float, int]:
@@ -92,8 +93,7 @@ def display_confusion_matrix(cm: DataFrame, threshold_percentage_of_passed_credi
     ax.set_xlabel('Puntaje Advise', labelpad=15)
     ax.set_ylabel('Porcentaje de créditos aprobados', labelpad=15)
 
-    with spinner('Actualizando matriz...'):
-        pyplot(fig)
+    pyplot(fig)
 
 
 def display_matrix_explanation(threshold_percentage_of_passed_credits: float, threshold_advise: int) -> None:
@@ -119,13 +119,12 @@ def display_used_students_explanation(df: DataFrame) -> None:
     write(
         "Para el análisis, se tomó como muestra todos los estudiantes de pregrado con puntaje Advise calculado para el periodo 2024-10. Los estudiantes en cuestión se pueden visualizar en la tabla a continuación.")
 
-    with spinner('Actualizando tabla...'):
-        format_final_df_for_display(df)
+    format_final_df_for_display(df)
 
-        if len(df) == 0:
-            write("No hay estudiantes en la base de datos.")
-        else:
-            write(df)
+    if len(df) == 0:
+        write("No hay estudiantes en la base de datos.")
+    else:
+        write(df)
 
 
 def format_final_df_for_display(df: DataFrame) -> None:
