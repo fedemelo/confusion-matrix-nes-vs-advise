@@ -1,4 +1,3 @@
-from streamlit import header, slider, markdown, write, pyplot, expander, subheader
 from sklearn.metrics import confusion_matrix
 from pandas import DataFrame, read_sql_query
 from matplotlib import pyplot as plt
@@ -6,6 +5,16 @@ from seaborn import heatmap
 from sqlite3 import connect
 from numpy import select
 from typing import Tuple
+from streamlit import (
+    header,
+    slider,
+    markdown,
+    write,
+    pyplot,
+    expander,
+    subheader,
+    spinner
+)
 
 
 PASSED_CREDITS_PCT_COLUMN = 'PORCENTAJE_CREDITOS_APROBADOS'
@@ -49,8 +58,8 @@ def load_data_from_db(db_file: str) -> DataFrame:
 
 
 def preprocess_data(df: DataFrame) -> DataFrame:
-    df[PASSED_CREDITS_PCT_COLUMN].fillna(100, inplace=True)
-    df[ADVISE_SCORE_COLUMN].fillna(100, inplace=True)
+    df.fillna({PASSED_CREDITS_PCT_COLUMN: 100}, inplace=True)
+    df.fillna({ADVISE_SCORE_COLUMN: 100}, inplace=True)
     return df
 
 
@@ -82,7 +91,9 @@ def display_confusion_matrix(cm: DataFrame, threshold_percentage_of_passed_credi
             yticklabels=[r'No en riesgo, % créditos', r'En riesgo, % créditos'])
     ax.set_xlabel('Puntaje Advise', labelpad=15)
     ax.set_ylabel('Porcentaje de créditos aprobados', labelpad=15)
-    pyplot(fig)
+
+    with spinner('Actualizando matriz...'):
+        pyplot(fig)
 
 
 def display_matrix_explanation(threshold_percentage_of_passed_credits: float, threshold_advise: int) -> None:
@@ -108,11 +119,13 @@ def display_used_students_explanation(df: DataFrame) -> None:
     write(
         "Para el análisis, se tomó como muestra todos los estudiantes de pregrado con puntaje Advise calculado para el periodo 2024-10. Los estudiantes en cuestión se pueden visualizar en la tabla a continuación.")
 
-    format_final_df_for_display(df)
-    if len(df) == 0:
-        write("No hay estudiantes en la base de datos.")
-    else:
-        write(df.sort_values(by=["Nombres"]))
+    with spinner('Actualizando tabla...'):
+        format_final_df_for_display(df)
+
+        if len(df) == 0:
+            write("No hay estudiantes en la base de datos.")
+        else:
+            write(df)
 
 
 def format_final_df_for_display(df: DataFrame) -> None:
