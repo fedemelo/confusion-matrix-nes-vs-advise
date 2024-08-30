@@ -38,7 +38,7 @@ def main(excel_file: str, db_file: str, table_name: str) -> None:
 if __name__ == '__main__':
     base_files_dir = path.join(path.dirname(
         __file__), 'base-files', 'external')
-    excel_file = 'Vista de búsqueda avanzada de puntaje 03-07-2024 15-23-58.xlsx'
+    excel_file = '2024_08_30_Indices de monitoreo.xlsx'
     db_file = 'advise.db'
     table_name = 'advise'
 

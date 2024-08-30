@@ -23,7 +23,8 @@ ADVISE_SCORE_COLUMN = 'INDICE_MONITOREO_ADVISE'
 
 
 def main() -> None:
-    header("Matriz de confusión: Porcentaje de créditos aprobados vs. Puntaje Advise")
+    header("Matriz de confusión: porcentaje de créditos aprobados vs. puntaje Advise")
+    chip("Actualizado: <b>30 de agosto de 2024</b>.")
 
     df = preprocess_data(load_data_from_db("undergraduate_students.db"))
 
@@ -39,6 +40,18 @@ def main() -> None:
             threshold_percentage_of_passed_credits, threshold_advise)
 
         display_used_students_explanation(df)
+
+
+def chip(text: str) -> None:
+    css = """
+        background-color:#01791A;
+        color:#ffffff; 
+        padding: 5px 10px; 
+        border-radius: 10px; 
+        display: inline-block;
+        margin-bottom: 18px
+        """
+    return markdown(f"<div style=\"{css}\"> {text} </div>", unsafe_allow_html=True)
 
 
 def show_sliders() -> Tuple[float, int]:
