@@ -24,7 +24,7 @@ ADVISE_SCORE_COLUMN = 'INDICE_MONITOREO_ADVISE'
 
 def main() -> None:
     header("Matriz de confusión: porcentaje de créditos aprobados vs. puntaje Advise")
-    # chip("Actualizado: <b>25 de octubre de 2024</b>.")
+    chip("Actualizado: <b>25 de octubre de 2024</b>.")
 
     df = preprocess_data(load_data_from_db("undergraduate_students.db"))
 
