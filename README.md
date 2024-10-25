@@ -17,26 +17,68 @@ The application deploys automatically when a new commit is pushed to the `main` 
 1. Create a virtual environment
 
    ```shell
-   python -m venv venv
+   python3.11 -m venv venv
+   ```
+
+2. Activate the virtual environment
+
+   Unix:
+
+   ```shell
    source venv/bin/activate
    ```
-   
-   The second command, to activate the virtual environment, will only work on Unix. For Windows, use the following command:
 
-   ```bash
-   venv\Scripts\activate
+   Windows:
+
+   ```batch
+   venv\Scripts\activate.bat
    ```
 
-2. Install the requirements
+3. Install dependencies
 
-   ```
+   ```shell
    pip install -r requirements.txt
    ```
 
-3. Run the app
+4. Run the app
 
    ```
    streamlit run streamlit_app.py
    ```
 
 The server should be running at http://localhost:8501.
+
+
+## Updating the Information
+
+1. Recover the most recent Advise report either from the email or from the Blob Storage. Store it in the `./base-files/external` directory.
+
+2. Update the Advise scores in the `./advise.db` SQLite database by running the `advise_report_to_sqlite.py` script.
+
+   Before running the script, change the `ADVISE_REPORT_NAME` variable to the current report name.
+
+   ```shell
+   python advise_report_to_sqlite.py
+   ```
+
+3. Update the `code-passed-credits-pct-period.csv` file in the `./base-files/own` directory with the most recent information. The query used in the Observatory-Connection microservice is:
+
+   ```sql
+   SELECT 
+   CODIGO_ESTUDIANTE, LOGIN, NOMBRES, APELLIDOS, PORCENTAJE_CREDITOS_APROBADOS, PERIODO_EVALUADO
+   FROM 
+   BlobStorage 
+   WHERE PERIODO_EVALUADO IN (202410, 202419, 202420);
+   ```
+
+4. Build the `undergraduate_students.db` SQLite database with all undergraduate students, their Advise scores and their passed credits percentage, by running the `preprocessing` script.
+
+   ```shell
+   python preprocessing.py
+   ```
+
+5. Run the application locally to check that everything is working as expected.
+
+   ```shell
+   streamlit run streamlit_app.py
+   ```

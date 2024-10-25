@@ -12,7 +12,7 @@ SELECT
 CODIGO_ESTUDIANTE, LOGIN, NOMBRES, APELLIDOS, PORCENTAJE_CREDITOS_APROBADOS, PERIODO_EVALUADO
 FROM 
 BlobStorage 
-WHERE PERIODO_EVALUADO IN (202410, 202320);
+WHERE PERIODO_EVALUADO IN (202410, 202419, 202420);
 ```
 It is processed into a DataFrame and the most recent entry for each student is kept. 
 It is filtered to only include undergraduate students.
