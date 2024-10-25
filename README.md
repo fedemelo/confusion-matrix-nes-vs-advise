@@ -68,7 +68,7 @@ The server should be running at http://localhost:8501.
    CODIGO_ESTUDIANTE, LOGIN, NOMBRES, APELLIDOS, PORCENTAJE_CREDITOS_APROBADOS, PERIODO_EVALUADO
    FROM 
    BlobStorage 
-   WHERE PERIODO_EVALUADO IN (202410, 202419, 202420);
+   WHERE PERIODO_EVALUADO IN (202410, 202419, 202420) AND DESCRIPCION_NIVEL_PROGRAMA_1 = 'PREGRADO';
    ```
 
 4. Build the `undergraduate_students.db` SQLite database with all undergraduate students, their Advise scores and their passed credits percentage, by running the `preprocessing` script.
